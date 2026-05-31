@@ -1,0 +1,10 @@
+### Auth Server
+
+#### User Types
+1. Admin (Web Portal)
+2. Employee (Mobile)
+3. Driver (Mobile)
+
+- Admin login using email and password
+- Employee login using email and password
+- Driver login using phone and password
