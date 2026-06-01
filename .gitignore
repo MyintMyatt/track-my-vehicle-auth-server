@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+auth-server-application/src/main/resources/certs/private-key.pem
