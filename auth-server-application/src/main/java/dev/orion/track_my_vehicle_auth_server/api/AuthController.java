@@ -1,0 +1,30 @@
+package dev.orion.track_my_vehicle_auth_server.api;
+
+import dev.orion.common.model.ApiResponse;
+import dev.orion.track_my_vehicle_auth_server.dto.input.AuthRequest;
+import dev.orion.track_my_vehicle_auth_server.dto.output.CheckEmployeeAccountResponse;
+import dev.orion.track_my_vehicle_auth_server.service.AuthService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/auth/v1/")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final AuthService authService;
+
+    @PostMapping("/login")
+    private ApiResponse<?> login(AuthRequest request, BindingResult result) {
+        return ApiResponse.success(authService.login(request));
+    }
+
+    @PostMapping("/check/account/{email}")
+    private ApiResponse<CheckEmployeeAccountResponse> checkAccountByEmail(@PathVariable String email){
+        return ApiResponse.success(authService.checkAccountByEmail(email));
+    }
+}
