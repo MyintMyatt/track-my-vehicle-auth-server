@@ -1,23 +1,22 @@
 package dev.orion.track_my_vehicle_auth_server.service;
 
 import dev.orion.account.constant.EmployeeAccountStatus;
-import dev.orion.auth.entiy.EmployeeAccount;
+import dev.orion.auth.entity.EmployeeAccount;
 import dev.orion.auth.repo.AccountRepo;
 import dev.orion.auth.repo.DriverAccountRepo;
 import dev.orion.auth.repo.EmployeeAccountRepo;
-import dev.orion.common.model.ApiResponse;
 import dev.orion.track_my_vehicle_auth_server.dto.input.AuthRequest;
 import dev.orion.track_my_vehicle_auth_server.dto.output.CheckEmployeeAccountResponse;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthService {
 
     private final AccountRepo accountRepo;

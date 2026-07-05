@@ -1,4 +1,4 @@
-package dev.orion.auth.entiy;
+package dev.orion.auth.entity;
 
 import dev.orion.auditor.AuditoryEntity;
 import dev.orion.common.constant.SystemType;

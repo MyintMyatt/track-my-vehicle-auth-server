@@ -1,4 +1,4 @@
-package dev.orion.auth.entiy;
+package dev.orion.auth.entity;
 
 import dev.orion.auditor.AuditoryEntity;
 import dev.orion.auth.constant.LockSettingType;
@@ -20,10 +20,9 @@ public class LockSetting extends AuditoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    private Integer id;
     private String tenantId;
 
-    private Integer id;
     @Enumerated(EnumType.STRING)
     private LockSettingType lockSettingType;
 

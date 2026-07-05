@@ -1,4 +1,4 @@
-package dev.orion.auth.entiy;
+package dev.orion.auth.entity;
 
 import dev.orion.auth.constant.OtpHistoryType;
 import dev.orion.auth.embedded.OtpHistoryPk;

@@ -1,4 +1,4 @@
-package dev.orion.auth.entiy;
+package dev.orion.auth.entity;
 
 
 import dev.orion.account.constant.AccountStatus;
