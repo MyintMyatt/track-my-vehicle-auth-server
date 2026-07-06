@@ -3,7 +3,7 @@ package dev.orion.track_my_vehicle_auth_server.service;
 import dev.orion.auth.repo.AccountRepo;
 import dev.orion.time.DateTimeUtils;
 import dev.orion.time.TimeSetting;
-import dev.orion.track_my_vehicle_auth_server.common.TokenType;
+import dev.orion.track_my_vehicle_auth_server.constant.TokenType;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
-import java.util.Date;
 import java.util.Objects;
 import java.util.stream.Collectors;
 

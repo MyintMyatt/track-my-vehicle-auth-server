@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 public class OtpServiceImpl implements OtpService {
 
     private final NotificationClient notificationClient;
-    private final OtpHelperService otpHelperService;
+    private final OtpLockService otpLockService;
 
     @Override
     public boolean send(OtpRequestForm form) {
-        if (otpHelperService.checkOtpLock(form.email())) {
+        if (otpLockService.checkUserIsInOtpTempLock(form.email())) {
             var otp = OtpCodeGeneratorUtils.generate();
             var otpRequest = OtpNotificationRequest.newBuilder().setEmail(form.email()).setOtp(otp).build();
             notificationClient.sendOtp(otpRequest).thenAccept(response -> {

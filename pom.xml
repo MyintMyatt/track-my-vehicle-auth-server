@@ -24,7 +24,7 @@
 	<modules>
 		<module>auth-server-application</module>
 		<module>auth-server-domain</module>
-	</modules>
+    </modules>
 	<scm>
 		<connection/>
 		<developerConnection/>

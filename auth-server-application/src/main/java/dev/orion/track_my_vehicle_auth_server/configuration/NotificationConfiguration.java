@@ -1,4 +1,4 @@
-package dev.orion.track_my_vehicle_auth_server.common;
+package dev.orion.track_my_vehicle_auth_server.configuration;
 
 import dev.orion.client.notification.grpc.NotificationClient;
 import dev.orion.client.notification.grpc.impl.NotificationClientImpl;

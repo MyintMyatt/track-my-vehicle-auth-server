@@ -17,4 +17,12 @@ public class OtpHistoryPk {
     private String email;
 
     private int seq;
+
+    public OtpHistoryPk pk(String email){
+        var pk = new OtpHistoryPk();
+        pk.setIssuedAt(LocalDateTime.now());
+        pk.setEmail(email);
+        pk.setSeq(++seq);
+        return pk;
+    }
 }
