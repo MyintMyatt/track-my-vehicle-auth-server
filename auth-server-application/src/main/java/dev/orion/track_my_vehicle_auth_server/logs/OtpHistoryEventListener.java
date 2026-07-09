@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class OtpHistoryLogger {
+public class OtpHistoryEventListener {
 
     private final OtpHistoryRepo repo;
 

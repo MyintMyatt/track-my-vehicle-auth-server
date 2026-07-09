@@ -17,17 +17,19 @@ public class OtpServiceImpl implements OtpService {
 
     @Override
     public boolean send(OtpRequestForm form) {
-        if (otpLockService.checkUserIsInOtpTempLock(form.email())) {
-            var otp = OtpCodeGeneratorUtils.generate();
-            var otpRequest = OtpNotificationRequest.newBuilder().setEmail(form.email()).setOtp(otp).build();
-            notificationClient.sendOtp(otpRequest).thenAccept(response -> {
-                if (response.getSuccess()) {
 
-                }
-            }).exceptionally(err -> {
-                return null;
-            });
-        }
+        otpLockService.checkUserIsInOtpTempLock(form.email());
+
+        var otp = OtpCodeGeneratorUtils.generate();
+        var otpRequest = OtpNotificationRequest.newBuilder().setEmail(form.email()).setOtp(otp).build();
+        notificationClient.sendOtp(otpRequest).thenAccept(response -> {
+            if (response.getSuccess()) {
+
+            }
+        }).exceptionally(err -> {
+            return null;
+        });
+
         return false;
     }
 
