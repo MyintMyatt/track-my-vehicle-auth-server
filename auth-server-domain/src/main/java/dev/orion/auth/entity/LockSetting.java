@@ -26,7 +26,7 @@ public class LockSetting extends AuditoryEntity {
     @Enumerated(EnumType.STRING)
     private LockSettingType lockSettingType;
 
-    private int maxFailedAttempts;
+    private int allowMaxAttempt;
 
     // The timeframe where failed attempts are counted
     private int attemptWindowValue;

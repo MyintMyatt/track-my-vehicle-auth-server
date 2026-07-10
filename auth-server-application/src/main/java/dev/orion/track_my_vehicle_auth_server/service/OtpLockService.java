@@ -26,7 +26,7 @@ public class OtpLockService {
     private final ApplicationEventPublisher eventPublisher;
 
     public void checkUserIsInOtpTempLock(String email) {
-        var setting = lockSettingService.findSetting(LockSettingType.OtpLock);
+        var setting = lockSettingService.findSetting(LockSettingType.OtpFailAttemptLock);
         var count = otpHistoryRepo.findOne(cb -> {
             var cq = cb.createQuery(Long.class);
             var root = cq.from(OtpHistory.class);
@@ -65,8 +65,8 @@ public class OtpLockService {
         }
     }
 
-    public boolean checkUserReachOtpFailMaxAttempt(OtpRequestForm request) {
-        var setting = lockSettingService.findSetting(LockSettingType.OtpLock);
+    public void checkUserIsInOtpLock(OtpRequestForm request, LockSettingType settingType, OtpHistoryType historyType) {
+        var setting = lockSettingService.findSetting(settingType);
         var attempts = otpHistoryRepo.findOne(cb -> {
             var cq = cb.createQuery(Long.class);
             var root = cq.from(OtpHistory.class);
@@ -74,24 +74,35 @@ public class OtpLockService {
             cq.where(
                     cb.and(
                             cb.equal(root.get("email"), request.email()),
-                            cb.equal(root.get("otpHistoryType"), OtpHistoryType.FailedAttempt),
+                            cb.equal(root.get("otpHistoryType"), historyType),
                             cb.greaterThanOrEqualTo(root.get("attemptWindowDurationUnit"), LocalDateTime.now().minus(setting.getTemporaryLockOutValue(), setting.getAttemptWindowDurationUnit()))
                     )
             );
             return cq;
         }).orElse(0L);
 
-        if (attempts >= setting.getMaxFailedAttempts()) {
-            eventPublisher.publishEvent(
-                    new OtpHistoryEvent(
+        if (attempts >= setting.getAllowMaxAttempt()) {
+            eventPublisher.publishEvent(new OtpHistoryEvent(
                             request.email(),
                             OtpHistoryType.TemporaryLockOut,
                             true
                     ));
-            return true;
-        } else {
-            return false;
+            throw new OtpException(
+                    new ExceptionMessageHolder(List.of(
+                            new ExceptionMessageHolder.Message("security.otp.too.many.request.title"),
+                            new ExceptionMessageHolder.Message("security.otp.too.many.request.desc", new Object[]{
+                                    setting.getTemporaryLockOutValue(),
+                                    setting.getTemporaryLockOutDurationUnit().toString().toLowerCase(),
+                                    DateTimeUtils.add(LocalDateTime.now(), new TimeSetting(setting.getTemporaryLockOutDurationUnit(), setting.getTemporaryLockOutValue()))
+                            }),
+                            new ExceptionMessageHolder.Message("security.otp.too.many.request.title.mm"),
+                            new ExceptionMessageHolder.Message("security.otp.too.many.request.desc.mm", new Object[]{
+                                    setting.getTemporaryLockOutValue(),
+                                    setting.getTemporaryLockOutDurationUnit().toString().toLowerCase(),
+                                    DateTimeUtils.add(LocalDateTime.now(), new TimeSetting(setting.getTemporaryLockOutDurationUnit(), setting.getTemporaryLockOutValue()))
+                            })
+                    ))
+            );
         }
     }
-
 }
