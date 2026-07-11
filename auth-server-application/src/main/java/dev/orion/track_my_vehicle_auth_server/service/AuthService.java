@@ -31,7 +31,6 @@ public class AuthService {
     }
 
     public CheckEmployeeAccountResponse checkAccountByEmail(String email) {
-
         // Check email with company domain name that is company mail or not
         if(!checkEmailDomainName(email)){
             throw new RuntimeException("Your email is not company mail.");
@@ -39,7 +38,6 @@ public class AuthService {
 
         var employee = employeeRepo.findOne(findEmployeeAccountByEmail(email)).orElse(null);
         return new CheckEmployeeAccountResponse(employee == null);
-
     }
 
     private boolean checkEmailDomainName(String email){

@@ -5,7 +5,7 @@ import dev.orion.auth.constant.OtpHistoryType;
 import dev.orion.auth.entity.OtpHistory;
 import dev.orion.auth.repo.OtpHistoryRepo;
 import dev.orion.exception.ExceptionMessageHolder;
-import dev.orion.exception.OtpException;
+import dev.orion.exception.auth.OtpException;
 import dev.orion.time.DateTimeUtils;
 import dev.orion.time.TimeSetting;
 import dev.orion.track_my_vehicle_auth_server.dto.input.OtpRequestForm;

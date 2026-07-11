@@ -2,6 +2,7 @@ package dev.orion.track_my_vehicle_auth_server.service;
 
 import dev.orion.auth.constant.LockSettingType;
 import dev.orion.auth.constant.OtpHistoryType;
+import dev.orion.auth.embedded.OtpHistoryPk;
 import dev.orion.client.notification.grpc.NotificationClient;
 import dev.orion.exception.ExceptionMessageHolder;
 import dev.orion.exception.ServiceException;
@@ -54,7 +55,11 @@ public class OtpServiceImpl implements OtpService {
 
     @Override
     public boolean check(String otpCheckSum, OtpCheckForm form) {
-        // TODO: implement otp encryption
+        // TODO: implement otp key encryption / decryption
+        var encryptedEmail = OtpHistoryPk.fromOtpKey(otpCheckSum).getEmail();
+        if (!encryptedEmail.equals(form.email())){
+            throw new OtpException("Invalid Otp");
+        }
 
         if(!isValidateOtp(form.email(),form.otp())){
             eventPublisher.publishEvent(new OtpHistoryEvent(form.email(), OtpHistoryType.FailedAttempt, true));
@@ -78,10 +83,6 @@ public class OtpServiceImpl implements OtpService {
     }
 
     private TimeSetting otpExpTime(){
-        return new TimeSetting(ChronoUnit.MINUTES, 1);
+        return new TimeSetting(ChronoUnit.MINUTES, 3);
     }
-
-
-
-
 }

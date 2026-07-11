@@ -1,5 +1,7 @@
 package dev.orion.auth.embedded;
 
+import dev.orion.exception.auth.OtpException;
+import dev.orion.time.DateTimeUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -23,6 +25,23 @@ public class OtpHistoryPk {
         pk.setIssuedAt(LocalDateTime.now());
         pk.setEmail(email);
         pk.setSeq(++seq);
+        return pk;
+    }
+
+    public String toOtpKey(){
+        var dateTime = DateTimeUtils.yyyyMMddHHmmss(issuedAt);
+        return dateTime + "-" + email + "-" + seq;
+    }
+
+    public static OtpHistoryPk fromOtpKey(String key){
+        var part = key.split("-");
+        if(part.length != 3) {
+            throw new OtpException("Invalid OTP Key");
+        }
+        var pk = new OtpHistoryPk();
+        pk.setIssuedAt(LocalDateTime.parse(part[0]));
+        pk.setEmail(part[1]);
+        pk.setSeq(Integer.parseInt(part[2]));
         return pk;
     }
 }
