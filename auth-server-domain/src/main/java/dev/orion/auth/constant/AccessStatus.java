@@ -1,6 +1,7 @@
 package dev.orion.auth.constant;
 
-import dev.orion.common.utils.EnumResponse;
+
+import dev.orion.commons.utils.EnumResponse;
 
 public enum AccessStatus implements EnumResponse {
     Success("Success"),

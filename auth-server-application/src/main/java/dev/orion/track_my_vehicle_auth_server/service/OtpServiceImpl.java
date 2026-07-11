@@ -3,12 +3,12 @@ package dev.orion.track_my_vehicle_auth_server.service;
 import dev.orion.auth.constant.LockSettingType;
 import dev.orion.auth.constant.OtpHistoryType;
 import dev.orion.auth.embedded.OtpHistoryPk;
-import dev.orion.client.notification.grpc.NotificationClient;
-import dev.orion.exception.ExceptionMessageHolder;
-import dev.orion.exception.ServiceException;
-import dev.orion.exception.auth.OtpException;
+import dev.orion.commons.client.notification.grpc.NotificationClient;
+import dev.orion.commons.exception.ExceptionMessageHolder;
+import dev.orion.commons.exception.ServiceException;
+import dev.orion.commons.exception.auth.OtpException;
+import dev.orion.commons.utils.time.TimeSetting;
 import dev.orion.grpc.notification.OtpNotificationRequest;
-import dev.orion.time.TimeSetting;
 import dev.orion.track_my_vehicle_auth_server.dto.input.OtpCheckForm;
 import dev.orion.track_my_vehicle_auth_server.dto.input.OtpRequestForm;
 import dev.orion.track_my_vehicle_auth_server.logs.event.OtpHistoryEvent;
@@ -69,7 +69,7 @@ public class OtpServiceImpl implements OtpService {
         return true;
     }
 
-    private void saveOtp(String email, String otp,TimeSetting expirationTime){
+    private void saveOtp(String email, String otp, TimeSetting expirationTime){
         redisTemplate.opsForValue().set(email, otp, expirationTime.value(), TimeUnit.of(expirationTime.unit()));
     }
 

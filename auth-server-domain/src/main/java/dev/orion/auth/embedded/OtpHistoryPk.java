@@ -1,7 +1,7 @@
 package dev.orion.auth.embedded;
 
-import dev.orion.exception.auth.OtpException;
-import dev.orion.time.DateTimeUtils;
+import dev.orion.commons.exception.auth.OtpException;
+import dev.orion.commons.utils.time.DateTimeUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;

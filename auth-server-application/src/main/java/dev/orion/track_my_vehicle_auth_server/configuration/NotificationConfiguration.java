@@ -1,7 +1,7 @@
 package dev.orion.track_my_vehicle_auth_server.configuration;
 
-import dev.orion.client.notification.grpc.NotificationClient;
-import dev.orion.client.notification.grpc.impl.NotificationClientImpl;
+import dev.orion.commons.client.notification.grpc.NotificationClient;
+import dev.orion.commons.client.notification.grpc.impl.NotificationClientImpl;
 import dev.orion.grpc.notification.OtpGrpcServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

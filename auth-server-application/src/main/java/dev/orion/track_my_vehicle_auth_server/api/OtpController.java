@@ -1,6 +1,6 @@
 package dev.orion.track_my_vehicle_auth_server.api;
 
-import dev.orion.common.model.ApiResponse;
+import dev.orion.commons.model.ApiResponse;
 import dev.orion.track_my_vehicle_auth_server.dto.input.OtpCheckForm;
 import dev.orion.track_my_vehicle_auth_server.dto.input.OtpRequestForm;
 import dev.orion.track_my_vehicle_auth_server.service.OtpService;

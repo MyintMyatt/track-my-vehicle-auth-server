@@ -1,8 +1,8 @@
 package dev.orion.track_my_vehicle_auth_server.service;
 
 import dev.orion.auth.repo.AccountRepo;
-import dev.orion.time.DateTimeUtils;
-import dev.orion.time.TimeSetting;
+import dev.orion.commons.utils.time.DateTimeUtils;
+import dev.orion.commons.utils.time.TimeSetting;
 import dev.orion.track_my_vehicle_auth_server.constant.TokenType;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
