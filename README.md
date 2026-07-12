@@ -2,6 +2,11 @@
 
 An enterprise-grade real-time ferry car tracking system that enables driver, vehicles, employee and ways management through admin portal.Employees receive push notification or mail alerts when ferry arrives at the designated pickup point.Administrators can monitor the live location of every ferry, while employees can notify driver of theirs attendance.
 
+#### Library
+- [track-my-vehicle-commons](https://github.com/MyintMyatt/track-my-vehicle-commons)
+- [track-my-vehicle-core-domain](https://github.com/MyintMyatt/track-my-vehicle-core-domain)
+
+
 #### User Types
 1. Admin (Web Portal)
 2. Employee (Mobile)
