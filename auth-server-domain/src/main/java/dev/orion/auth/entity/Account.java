@@ -39,7 +39,9 @@ public abstract class Account extends AuditoryEntity {
     @Column(nullable = false)
     private TransactionState transactionState;
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
+    private boolean permanentLock = false;
+
+    @OneToOne(mappedBy = "account")
     private AccountAccess accountAccess;
 
     public abstract AccountStatus getAccountStatus();

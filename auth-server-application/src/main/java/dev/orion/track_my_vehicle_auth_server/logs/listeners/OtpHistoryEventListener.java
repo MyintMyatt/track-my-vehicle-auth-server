@@ -1,4 +1,4 @@
-package dev.orion.track_my_vehicle_auth_server.logs;
+package dev.orion.track_my_vehicle_auth_server.logs.listeners;
 
 import dev.orion.auth.embedded.OtpHistoryPk;
 import dev.orion.auth.entity.OtpHistory;

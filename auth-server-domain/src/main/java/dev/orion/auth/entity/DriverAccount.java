@@ -2,10 +2,14 @@ package dev.orion.auth.entity;
 
 import dev.orion.account.constant.AccountStatus;
 import dev.orion.account.constant.DriverAccountStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "driver_account")
+@Data
 public class DriverAccount extends Account{
 
     @Enumerated(EnumType.STRING)

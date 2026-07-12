@@ -21,12 +21,7 @@ public class AccountRole extends AuditoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, unique = true)@ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "account_role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns =  @JoinColumn(name = "permission_id")
-    )
+    @Column(nullable = false, unique = true)
     private String name;
 
     private String description;

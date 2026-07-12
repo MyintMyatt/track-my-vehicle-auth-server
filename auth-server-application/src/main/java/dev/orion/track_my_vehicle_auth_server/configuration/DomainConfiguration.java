@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = {"dev.orion.auth.repo",}
+        basePackages = {"dev.orion.auth.repo",},
+        repositoryBaseClass = dev.orion.repository.AbstractRepositoryImpl.class
 )
 @EntityScan(basePackages = {"dev.orion.auth.entity"})
 public class DomainConfiguration {
 }
+

@@ -4,7 +4,13 @@ package dev.orion.auth.entity;
 import dev.orion.account.constant.AccountStatus;
 import dev.orion.account.constant.AdminAccountStatus;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "admin_account")
+@Data
 public class AdminAccount extends Account{
 
     @Column(nullable = false)

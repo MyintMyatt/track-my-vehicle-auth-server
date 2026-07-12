@@ -22,7 +22,6 @@
             <groupId>dev.orion</groupId>
             <artifactId>auth-server-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>

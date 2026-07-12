@@ -1,8 +1,11 @@
 package dev.orion.auth.entity;
 
 import dev.orion.auth.constant.AccessStatus;
+import dev.orion.auth.constant.AccessType;
 import dev.orion.auth.embedded.AccessHistoryPk;
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data

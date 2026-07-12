@@ -3,7 +3,15 @@ package dev.orion.auth.entity;
 import dev.orion.account.constant.AccountStatus;
 import dev.orion.account.constant.EmployeeAccountStatus;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "employee_account")
+@Data
 public class EmployeeAccount extends Account{
 
     @Column(nullable = false)

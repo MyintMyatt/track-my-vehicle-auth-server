@@ -38,7 +38,7 @@ public class JwtTokenService {
 
     private PrivateKey privateKey;
 
-    @Value("${classpath:certs/private-key.pem")
+    @Value("${app.jwt.private-key-path}")
     private Resource privateKeyResource;
 
     @Value("${app.jwt.token.issuer}")
