@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotEmpty;
 public record DeviceInfo(
         @NotEmpty(message = "{validation.empty} device ip")
         String ipAddress,
+        @NotEmpty(message = "{validation.empty} device name")
         String deviceName,
         @NotEmpty(message = "{validation.empty} device id")
         String deviceId,
-        @NotEmpty(message = "{validation.empty} device fcm")
         String fcmToken
 ) {
 }

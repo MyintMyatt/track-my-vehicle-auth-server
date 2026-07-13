@@ -3,6 +3,7 @@ package dev.orion.auth.entity;
 import dev.orion.account.constant.AccountStatus;
 import dev.orion.account.constant.UserType;
 import dev.orion.auditor.AuditoryEntity;
+import dev.orion.auth.embedded.UserName;
 import dev.orion.transaction.constant.TransactionState;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,8 +19,8 @@ public abstract class Account extends AuditoryEntity {
     @GeneratedValue(generator = "seq_generator")
     private long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Embedded
+    private UserName userName;
 
     private String fullName;
 

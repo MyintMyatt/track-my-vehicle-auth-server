@@ -5,16 +5,31 @@ import dev.orion.auth.constant.AccessType;
 import dev.orion.auth.embedded.AccessHistoryPk;
 import dev.orion.auth.entity.AccountAccessHistory;
 import dev.orion.track_my_vehicle_auth_server.dto.input.DeviceInfo;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-public record AccountAccessEvent(
-    long accountId,
-    String name,
-    AccessType accessType,
-    AccessStatus accessStatus,
-    DeviceInfo deviceInfo
-) {
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class AccountAccessEvent{
+    String name; // unique name
+    AccessType accessType;
+    AccessStatus accessStatus;
+    DeviceInfo deviceInfo;
+
+    public static AccountAccessEvent loginSuccess(String name, DeviceInfo deviceInfo){
+        return new AccountAccessEvent(name, AccessType.Login, AccessStatus.Success, deviceInfo);
+    }
+
+    public static AccountAccessEvent loginFail(String name,AccessStatus status, DeviceInfo deviceInfo){
+        return new AccountAccessEvent(name, AccessType.Login, status, deviceInfo);
+    }
+
     public AccountAccessHistory history(){
         var entity = new AccountAccessHistory();
         var id = new AccessHistoryPk();

@@ -1,18 +1,16 @@
 package dev.orion.track_my_vehicle_auth_server.utils;
 
-import dev.orion.account.constant.EmployeeAccountStatus;
-import dev.orion.auth.entity.AdminAccount;
+import dev.orion.auth.entity.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.List;
 
-public class AdminUserDetailsAdapter implements UserDetailsAdapter{
+public class AccountUserDetailsAdapter implements UserDetailsAdapter {
+    private final Account account;
 
-    private final AdminAccount account;
-
-    public AdminUserDetailsAdapter(AdminAccount account){
+    public AccountUserDetailsAdapter(Account account) {
         this.account = account;
     }
 
@@ -33,19 +31,16 @@ public class AdminUserDetailsAdapter implements UserDetailsAdapter{
 
     @Override
     public boolean accountLocked() {
-        return account.getAccountStatus() == EmployeeAccountStatus.LOCKED;
+        return account.isPermanentLock();
     }
 
     @Override
     public boolean accountExpired() {
-        return account.getAccountStatus() == EmployeeAccountStatus.CLOSED;
+        return account.getAuditInfo().isDeleted();
     }
 
     @Override
     public boolean disabled() {
-        return account.getAccountStatus() == EmployeeAccountStatus.SUSPENDED ||
-                account.getAccountStatus() == EmployeeAccountStatus.REJECT;
+        return account.isPermanentLock();
     }
 }
-
-

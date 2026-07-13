@@ -18,7 +18,7 @@ public class DriverUserDetailsAdapter implements UserDetailsAdapter{
 
     @Override
     public String username() {
-        return account.getName();
+        return account.getUserName().getUniqueName();
     }
 
     @Override

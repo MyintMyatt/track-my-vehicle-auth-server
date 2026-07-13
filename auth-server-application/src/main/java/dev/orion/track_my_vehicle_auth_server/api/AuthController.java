@@ -4,6 +4,7 @@ import dev.orion.commons.model.ApiResponse;
 import dev.orion.track_my_vehicle_auth_server.constant.ClientOrigin;
 import dev.orion.track_my_vehicle_auth_server.dto.input.AuthRequest;
 import dev.orion.track_my_vehicle_auth_server.dto.output.CheckEmployeeAccountResponse;
+import dev.orion.track_my_vehicle_auth_server.dto.output.LoginResponse;
 import dev.orion.track_my_vehicle_auth_server.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -17,7 +18,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    private ApiResponse<?> login(
+    private ApiResponse<LoginResponse> login(
             @RequestHeader("X-Client-Origin") ClientOrigin clientOrigin,
             AuthRequest request, BindingResult result) {
         return ApiResponse.success(authService.login(clientOrigin, request));
