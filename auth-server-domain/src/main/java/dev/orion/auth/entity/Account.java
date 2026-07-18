@@ -1,10 +1,10 @@
 package dev.orion.auth.entity;
 
-import dev.orion.account.constant.AccountStatus;
-import dev.orion.account.constant.UserType;
-import dev.orion.auditor.AuditoryEntity;
+import dev.orion.core.domain.account.constant.AccountStatus;
+import dev.orion.core.domain.account.constant.UserType;
+import dev.orion.core.domain.auditor.AuditoryEntity;
 import dev.orion.auth.embedded.UserName;
-import dev.orion.transaction.constant.TransactionState;
+import dev.orion.core.domain.transaction.constant.TransactionState;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

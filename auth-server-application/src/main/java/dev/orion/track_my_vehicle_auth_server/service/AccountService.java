@@ -1,7 +1,7 @@
 package dev.orion.track_my_vehicle_auth_server.service;
 
-import dev.orion.account.constant.DriverAccountStatus;
-import dev.orion.account.constant.EmployeeAccountStatus;
+import dev.orion.core.domain.account.constant.DriverAccountStatus;
+import dev.orion.core.domain.account.constant.EmployeeAccountStatus;
 import dev.orion.auth.entity.Account;
 import dev.orion.auth.entity.AdminAccount;
 import dev.orion.auth.entity.DriverAccount;
@@ -10,7 +10,7 @@ import dev.orion.auth.repo.AccountRepo;
 import dev.orion.auth.repo.AdminAccountRepo;
 import dev.orion.auth.repo.DriverAccountRepo;
 import dev.orion.auth.repo.EmployeeAccountRepo;
-import dev.orion.transaction.constant.TransactionState;
+import dev.orion.core.domain.transaction.constant.TransactionState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

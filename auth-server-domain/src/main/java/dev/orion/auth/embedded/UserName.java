@@ -1,6 +1,6 @@
 package dev.orion.auth.embedded;
 
-import dev.orion.common.constant.SystemType;
+import dev.orion.core.domain.common.constant.SystemType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;

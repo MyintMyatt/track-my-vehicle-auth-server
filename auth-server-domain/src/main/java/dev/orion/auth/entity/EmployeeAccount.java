@@ -1,7 +1,7 @@
 package dev.orion.auth.entity;
 
-import dev.orion.account.constant.AccountStatus;
-import dev.orion.account.constant.EmployeeAccountStatus;
+import dev.orion.core.domain.account.constant.AccountStatus;
+import dev.orion.core.domain.account.constant.EmployeeAccountStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

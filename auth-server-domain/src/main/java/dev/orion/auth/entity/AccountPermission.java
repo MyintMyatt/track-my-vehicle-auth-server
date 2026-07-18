@@ -1,13 +1,11 @@
 package dev.orion.auth.entity;
 
-import dev.orion.auditor.AuditoryEntity;
+import dev.orion.core.domain.auditor.AuditoryEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -21,11 +19,12 @@ public class AccountPermission extends AuditoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String resource; // order, product, etc.
 
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
-    private Set<AccountRole> role;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private AccountRole role;
 
     @Column(name = "permission_request", nullable = false)
     private boolean request = false;

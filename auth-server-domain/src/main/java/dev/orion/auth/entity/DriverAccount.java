@@ -1,7 +1,7 @@
 package dev.orion.auth.entity;
 
-import dev.orion.account.constant.AccountStatus;
-import dev.orion.account.constant.DriverAccountStatus;
+import dev.orion.core.domain.account.constant.AccountStatus;
+import dev.orion.core.domain.account.constant.DriverAccountStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,7 +1,7 @@
 package dev.orion.auth.entity;
 
-import dev.orion.auditor.AuditoryEntity;
-import dev.orion.common.constant.SystemType;
+import dev.orion.core.domain.auditor.AuditoryEntity;
+import dev.orion.core.domain.common.constant.SystemType;
 import jakarta.persistence.*;
 import lombok.*;
 

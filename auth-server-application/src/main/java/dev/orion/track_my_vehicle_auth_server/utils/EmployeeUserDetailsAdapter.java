@@ -1,6 +1,6 @@
 package dev.orion.track_my_vehicle_auth_server.utils;
 
-import dev.orion.account.constant.EmployeeAccountStatus;
+import dev.orion.core.domain.account.constant.EmployeeAccountStatus;
 import dev.orion.auth.entity.EmployeeAccount;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +18,7 @@ public class EmployeeUserDetailsAdapter implements UserDetailsAdapter{
 
     @Override
     public String username() {
-        return account.getName();
+        return account.getUserName().getUniqueName();
     }
 
     @Override

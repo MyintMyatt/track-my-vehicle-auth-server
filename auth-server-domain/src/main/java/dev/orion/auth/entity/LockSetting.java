@@ -1,6 +1,6 @@
 package dev.orion.auth.entity;
 
-import dev.orion.auditor.AuditoryEntity;
+import dev.orion.core.domain.auditor.AuditoryEntity;
 import dev.orion.auth.constant.LockSettingType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
