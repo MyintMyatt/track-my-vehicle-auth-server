@@ -19,8 +19,9 @@ public class AccountPermission extends AuditoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true)
-    private String resource; // order, product, etc.
+    @ManyToOne
+    @JoinColumn(name = "resource_id", referencedColumnName = "id")
+    private Resources resources;
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
@@ -28,6 +29,8 @@ public class AccountPermission extends AuditoryEntity {
 
     @Column(name = "permission_request", nullable = false)
     private boolean request = false;
+    @Column(name = "permission_create", nullable = false)
+    private boolean create = false;
     @Column(name = "permission_approve", nullable = false)
     private boolean approve = false;
     @Column(name = "permission_reject", nullable = false)

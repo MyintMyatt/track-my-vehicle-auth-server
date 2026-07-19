@@ -4,7 +4,7 @@ import dev.orion.auth.constant.AccessStatus;
 import dev.orion.auth.constant.AccessType;
 import dev.orion.auth.embedded.AccessHistoryPk;
 import dev.orion.auth.entity.AccountAccessHistory;
-import dev.orion.track_my_vehicle_auth_server.dto.input.DeviceInfo;
+import dev.orion.track_my_vehicle_auth_server.dto.request.DeviceInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

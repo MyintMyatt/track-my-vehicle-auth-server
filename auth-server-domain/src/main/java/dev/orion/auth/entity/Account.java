@@ -45,5 +45,9 @@ public abstract class Account extends AuditoryEntity {
     @OneToOne(mappedBy = "account")
     private AccountAccess accountAccess;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private AccountRole accountRole;
+
     public abstract AccountStatus getAccountStatus();
 }

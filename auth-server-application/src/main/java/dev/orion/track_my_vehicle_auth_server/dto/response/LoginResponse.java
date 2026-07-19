@@ -1,4 +1,4 @@
-package dev.orion.track_my_vehicle_auth_server.dto.output;
+package dev.orion.track_my_vehicle_auth_server.dto.response;
 
 import dev.orion.core.domain.account.constant.UserType;
 import lombok.AllArgsConstructor;

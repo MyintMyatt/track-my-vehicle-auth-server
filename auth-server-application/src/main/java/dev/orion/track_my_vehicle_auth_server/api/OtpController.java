@@ -1,8 +1,8 @@
 package dev.orion.track_my_vehicle_auth_server.api;
 
 import dev.orion.commons.model.ApiResponse;
-import dev.orion.track_my_vehicle_auth_server.dto.input.OtpCheckForm;
-import dev.orion.track_my_vehicle_auth_server.dto.input.OtpRequestForm;
+import dev.orion.track_my_vehicle_auth_server.dto.request.OtpCheckForm;
+import dev.orion.track_my_vehicle_auth_server.dto.request.OtpRequestForm;
 import dev.orion.track_my_vehicle_auth_server.service.OtpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;

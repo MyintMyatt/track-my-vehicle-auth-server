@@ -8,7 +8,7 @@ import dev.orion.commons.exception.ExceptionMessageHolder;
 import dev.orion.commons.exception.auth.OtpException;
 import dev.orion.commons.utils.time.DateTimeUtils;
 import dev.orion.commons.utils.time.TimeSetting;
-import dev.orion.track_my_vehicle_auth_server.dto.input.OtpRequestForm;
+import dev.orion.track_my_vehicle_auth_server.dto.request.OtpRequestForm;
 import dev.orion.track_my_vehicle_auth_server.logs.event.OtpHistoryEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

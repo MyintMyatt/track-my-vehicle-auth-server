@@ -2,9 +2,9 @@ package dev.orion.track_my_vehicle_auth_server.api;
 
 import dev.orion.commons.model.ApiResponse;
 import dev.orion.track_my_vehicle_auth_server.constant.ClientOrigin;
-import dev.orion.track_my_vehicle_auth_server.dto.input.AuthRequest;
-import dev.orion.track_my_vehicle_auth_server.dto.output.CheckEmployeeAccountResponse;
-import dev.orion.track_my_vehicle_auth_server.dto.output.LoginResponse;
+import dev.orion.track_my_vehicle_auth_server.dto.request.AuthRequest;
+import dev.orion.track_my_vehicle_auth_server.dto.response.CheckEmployeeAccountResponse;
+import dev.orion.track_my_vehicle_auth_server.dto.response.LoginResponse;
 import dev.orion.track_my_vehicle_auth_server.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;

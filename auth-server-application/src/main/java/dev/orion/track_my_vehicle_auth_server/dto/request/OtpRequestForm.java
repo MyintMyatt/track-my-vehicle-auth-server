@@ -1,4 +1,4 @@
-package dev.orion.track_my_vehicle_auth_server.dto.input;
+package dev.orion.track_my_vehicle_auth_server.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

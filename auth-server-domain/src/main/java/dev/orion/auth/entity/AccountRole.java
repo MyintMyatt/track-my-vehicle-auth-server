@@ -19,7 +19,7 @@ public class AccountRole extends AuditoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -30,11 +30,6 @@ public class AccountRole extends AuditoryEntity {
     @Column(nullable = false)
     private SystemType systemType;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "account_role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns =  @JoinColumn(name = "permission_id")
-    )
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<AccountPermission> permissions = new HashSet<>();
 }
