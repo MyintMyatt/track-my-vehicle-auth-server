@@ -2,7 +2,7 @@ package dev.orion.track_my_vehicle_auth_server.configuration;
 
 import dev.orion.commons.client.notification.grpc.NotificationClient;
 import dev.orion.commons.client.notification.grpc.impl.NotificationClientImpl;
-import dev.orion.grpc.notification.OtpGrpcServiceGrpc;
+import dev.orion.grpc.notification.OtpServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +19,12 @@ public class NotificationConfiguration {
     }
 
     @Bean
-    OtpGrpcServiceGrpc.OtpGrpcServiceStub otpGrpcServiceStub(ManagedChannel channel){
-        return OtpGrpcServiceGrpc.newStub(channel);
+    OtpServiceGrpc.OtpServiceStub otpGrpcServiceStub(ManagedChannel channel){
+        return OtpServiceGrpc.newStub(channel);
     }
 
     @Bean
-    NotificationClient notificationClient(OtpGrpcServiceGrpc.OtpGrpcServiceStub stub){
+    NotificationClient notificationClient(OtpServiceGrpc.OtpServiceStub stub){
         return new NotificationClientImpl(stub);
     }
 }

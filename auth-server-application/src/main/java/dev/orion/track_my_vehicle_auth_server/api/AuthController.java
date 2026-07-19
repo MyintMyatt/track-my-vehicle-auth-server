@@ -8,7 +8,11 @@ import dev.orion.track_my_vehicle_auth_server.dto.response.LoginResponse;
 import dev.orion.track_my_vehicle_auth_server.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @RestController
 @RequestMapping("/auth/v1/")
@@ -21,6 +25,7 @@ public class AuthController {
     private ApiResponse<LoginResponse> login(
             @RequestHeader("X-Client-Origin") ClientOrigin clientOrigin,
             AuthRequest request, BindingResult result) {
+        System.err.println("call login");
         return ApiResponse.success(authService.login(clientOrigin, request));
     }
 
