@@ -30,6 +30,9 @@ public class AccountRole extends AuditoryEntity {
     @Column(nullable = false)
     private SystemType systemType;
 
+    @Column(nullable = false)
+    private boolean isDefault;
+
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<AccountPermission> permissions = new HashSet<>();
 }

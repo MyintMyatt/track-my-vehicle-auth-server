@@ -33,3 +33,4 @@ build/
 .vscode/
 
 auth-server-application/src/main/resources/certs/private-key.pem
+auth-server-application/src/main/resources/application-prod.properties

@@ -1,5 +1,6 @@
 package dev.orion.track_my_vehicle_auth_server.service;
 
+import dev.orion.core.domain.account.constant.AdminAccountStatus;
 import dev.orion.core.domain.account.constant.DriverAccountStatus;
 import dev.orion.core.domain.account.constant.EmployeeAccountStatus;
 import dev.orion.auth.entity.Account;
@@ -10,10 +11,13 @@ import dev.orion.auth.repo.AccountRepo;
 import dev.orion.auth.repo.AdminAccountRepo;
 import dev.orion.auth.repo.DriverAccountRepo;
 import dev.orion.auth.repo.EmployeeAccountRepo;
+import dev.orion.core.domain.account.constant.UserType;
 import dev.orion.core.domain.transaction.constant.TransactionState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +33,7 @@ public class AccountService {
         return accountRepo.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
     public Account findAccountByUserName(String name) {
         return accountRepo.findOne(cb -> {
             var cq = cb.createQuery(Account.class);
@@ -41,6 +46,19 @@ public class AccountService {
             );
             return cq;
         }).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Account> findSuperAdmin(){
+        return accountRepo.findAll(cb -> {
+            var cq = cb.createQuery(Account.class);
+            var root = cq.from(Account.class);
+            cq.select(root);
+            cq.where(
+                    cb.equal(root.get("userType"), UserType.SUPER_ADMIN)
+            );
+            return cq;
+        });
     }
 
     public EmployeeAccount findEmployeeByEmail(String email) {
@@ -136,7 +154,7 @@ public class AccountService {
                                     cb.equal(root.get("userName").get("uniqueName"), name)
 
                             ),
-                            cb.notEqual(root.get("adminAccountStatus"), DriverAccountStatus.CLOSED)
+                            cb.notEqual(root.get("adminAccountStatus"), AdminAccountStatus.CLOSED)
                     )
             );
             return cq;

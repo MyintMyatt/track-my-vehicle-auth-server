@@ -10,20 +10,22 @@ import java.util.Optional;
 public class AuditoryAwareConfig implements AuditorAware<Auditor> {
     @Override
     public Optional<Auditor> getCurrentAuditor() {
-        var context = SecurityContextHolder.getContext();
 
-        if (null != context) {
-            var authentication = context.getAuthentication();
-            if (null != authentication && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
-                return Optional.of(
-                        Auditor.builder()
-                                .userName(authentication.getName())
-                                .fullName(Optional.ofNullable(authentication.getDetails()).toString())
-                                .build()
-                );
-            }
+        var authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (authentication == null
+                || authentication instanceof AnonymousAuthenticationToken
+                || !authentication.isAuthenticated()) {
+            return Optional.empty();
         }
-        return Optional.empty();
 
+        return Optional.of(
+                Auditor.builder()
+                        .userName(authentication.getName())
+                        .fullName(String.valueOf(authentication.getDetails()))
+                        .build()
+        );
     }
 }

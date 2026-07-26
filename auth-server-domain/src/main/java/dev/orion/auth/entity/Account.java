@@ -42,10 +42,14 @@ public abstract class Account extends AuditoryEntity {
 
     private boolean permanentLock = false;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(
+            mappedBy = "account",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private AccountAccess accountAccess;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private AccountRole accountRole;
 
