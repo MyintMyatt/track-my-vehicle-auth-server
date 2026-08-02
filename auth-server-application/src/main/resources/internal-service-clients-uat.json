@@ -1,0 +1,23 @@
+
+{
+  "clients" : [
+    {
+      "clientId" : "com.user.service",
+      "clientSecret" : "password@123",
+      "serviceName" : "User Service",
+      "role" : 1
+    },
+    {
+      "clientId" : "com.tracking.service",
+      "clientSecret" : "password@123",
+      "serviceName" : "Tracking Service",
+      "role" : 1
+    },
+    {
+      "clientId" : "com.notification.service",
+      "clientSecret" : "password@123",
+      "serviceName" : "Notification Service",
+      "role" : 1
+    }
+  ]
+}

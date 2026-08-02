@@ -39,6 +39,16 @@ public class AuthUserDetailsService implements UserDetailsService {
                 return accountService.findDriverByPhoneOrUserName(phone, phone)
                         .map(e -> toUserDetails(e, clientOrigin)).orElseThrow(() -> new UsernameNotFoundException(phone));
             }
+            case InternalService: {
+                var clientId = arr[1];
+                var client = accountService.findServiceClientByClientId(clientId).orElseThrow(() -> new UsernameNotFoundException(clientId));
+                return User.builder()
+                        .username(client.getClientId())
+                        .password(client.getClientSecret())
+                        .disabled(client.getAuditInfo()
+                        .isDeleted())
+                        .build();
+            }
             default: {
                 var name = arr[1];
                 var account = accountService.findAccountByUserName(name);

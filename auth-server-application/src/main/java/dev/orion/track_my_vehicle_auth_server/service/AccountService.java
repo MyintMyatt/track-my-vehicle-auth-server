@@ -1,16 +1,10 @@
 package dev.orion.track_my_vehicle_auth_server.service;
 
+import dev.orion.auth.entity.*;
+import dev.orion.auth.repo.*;
 import dev.orion.core.domain.account.constant.AdminAccountStatus;
 import dev.orion.core.domain.account.constant.DriverAccountStatus;
 import dev.orion.core.domain.account.constant.EmployeeAccountStatus;
-import dev.orion.auth.entity.Account;
-import dev.orion.auth.entity.AdminAccount;
-import dev.orion.auth.entity.DriverAccount;
-import dev.orion.auth.entity.EmployeeAccount;
-import dev.orion.auth.repo.AccountRepo;
-import dev.orion.auth.repo.AdminAccountRepo;
-import dev.orion.auth.repo.DriverAccountRepo;
-import dev.orion.auth.repo.EmployeeAccountRepo;
 import dev.orion.core.domain.account.constant.UserType;
 import dev.orion.core.domain.transaction.constant.TransactionState;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +22,7 @@ public class AccountService {
     private final AdminAccountRepo adminRepo;
     private final DriverAccountRepo driverRepo;
     private final AccountRepo accountRepo;
+    private final InternalServiceClientRepo serviceClientRepo;
 
     public Account findById(long id) {
         return accountRepo.findById(id).orElse(null);
@@ -49,7 +44,7 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
-    public List<Account> findSuperAdmin(){
+    public List<Account> findSuperAdmin() {
         return accountRepo.findAll(cb -> {
             var cq = cb.createQuery(Account.class);
             var root = cq.from(Account.class);
@@ -88,6 +83,21 @@ public class AccountService {
                                     cb.equal(root.get("userName").get("uniqueName"), name)
                             ),
                             cb.notEqual(root.get("employeeAccountStatus"), EmployeeAccountStatus.CLOSED)
+                    )
+            );
+            return cq;
+        });
+    }
+
+    public Optional<InternalServiceClient> findServiceClientByClientId(String clientId) {
+        return serviceClientRepo.findOne(cb -> {
+            var cq = cb.createQuery(InternalServiceClient.class);
+            var root = cq.from(InternalServiceClient.class);
+            cq.select(root);
+            cq.where(
+                    cb.and(
+                            cb.equal(root.get("clientId"), clientId),
+                            cb.isFalse(root.get("auditInfo").get("deleted"))
                     )
             );
             return cq;
@@ -160,7 +170,6 @@ public class AccountService {
             return cq;
         });
     }
-
 
 
 }

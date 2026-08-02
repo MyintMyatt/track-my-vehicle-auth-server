@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class OtpServiceImpl implements OtpService {
 
-    private final NotificationClient notificationClient;
+//    private final NotificationClient notificationClient;
     private final OtpLockService otpLockService;
     private final StringRedisTemplate redisTemplate;
     private final ApplicationEventPublisher eventPublisher;
@@ -42,14 +42,14 @@ public class OtpServiceImpl implements OtpService {
 
         var otp = OtpCodeGeneratorUtils.generate();
         var otpRequest = OtpNotificationRequest.newBuilder().setEmail(form.email()).setOtp(otp).build();
-        notificationClient.sendOtp(otpRequest).thenAccept(response -> {
-            if (response.getSuccess()) {
-                saveOtp(form.email(), otp, otpExpTime());
-                eventPublisher.publishEvent(new OtpHistoryEvent(form.email(), OtpHistoryType.Requested, false));
-            }
-        }).exceptionally(err -> {
-            throw new ServiceException(new ExceptionMessageHolder(new ExceptionMessageHolder.Message("service.unavailable", new Object[]{"Otp Request"})));
-        });
+//        notificationClient.sendOtp(otpRequest).thenAccept(response -> {
+//            if (response.getSuccess()) {
+//                saveOtp(form.email(), otp, otpExpTime());
+//                eventPublisher.publishEvent(new OtpHistoryEvent(form.email(), OtpHistoryType.Requested, false));
+//            }
+//        }).exceptionally(err -> {
+//            throw new ServiceException(new ExceptionMessageHolder(new ExceptionMessageHolder.Message("service.unavailable", new Object[]{"Otp Request"})));
+//        });
         return true;
     }
 

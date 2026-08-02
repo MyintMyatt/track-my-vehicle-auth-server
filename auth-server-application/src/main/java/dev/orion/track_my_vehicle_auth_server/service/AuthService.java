@@ -1,6 +1,8 @@
 package dev.orion.track_my_vehicle_auth_server.service;
 
 import dev.orion.auth.constant.AccessStatus;
+import dev.orion.grpc.auth.public_client.ServiceLoginRequest;
+import dev.orion.grpc.auth.public_client.ServiceLoginResponse;
 import dev.orion.track_my_vehicle_auth_server.constant.ClientOrigin;
 import dev.orion.track_my_vehicle_auth_server.constant.TokenType;
 import dev.orion.track_my_vehicle_auth_server.dto.request.AuthRequest;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,29 @@ public class AuthService {
             eventPublisher.publishEvent(accessEvent);
         }
     }
+
+    @Transactional(noRollbackFor = AuthenticationException.class)
+    public ServiceLoginResponse internalServiceLogin(ClientOrigin clientOrigin, ServiceLoginRequest request) {
+        var token = UsernamePasswordAuthenticationToken.unauthenticated(ClientOrigin.InternalService.name() + "-" + request.getClientId(), request.getClientSecret());
+        var authentication = authenticationManager.authenticate(token);
+        try{
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String accessToken = tokenService.generateToken(TokenType.Access, authentication, clientOrigin == ClientOrigin.AdminPortal);
+            String refreshToken = tokenService.generateToken(TokenType.Refresh, authentication, clientOrigin == ClientOrigin.AdminPortal);
+
+            return ServiceLoginResponse.newBuilder()
+                    .setSuccess(true)
+                    .setMessage("Successfully login")
+                    .setAccessToken(accessToken)
+                    .setRefreshToken(refreshToken)
+                    .build();
+
+        } catch (AuthenticationException e){
+            throw e;
+        }
+    }
+
 
     public CheckEmployeeAccountResponse checkAccountByEmail(String email) {
         // Check email with company domain name that is company mail or not

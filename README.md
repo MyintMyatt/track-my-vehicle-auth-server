@@ -10,9 +10,11 @@ An enterprise-grade real-time ferry car tracking system that enables driver, veh
 1. [Auth Service](https://github.com/MyintMyatt/track-my-vehicle-auth-server) - port _9000_
 2. [Admin Service](https://github.com/MyintMyatt/track-my-vehicle-admin-service) - port _8081_
 3. [Employee Service]() - _port 8082_
+4. [Notification Service]() - _port 9001_
 
 ### gRPC Server
 1. Auth gRPC Server - _port 9090_
+2. Notification gRPC Server - _port 9001_
 #### User Types
 1. Admin (Web Portal)
 2. Employee (Mobile)
