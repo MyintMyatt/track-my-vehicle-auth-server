@@ -35,7 +35,7 @@ public class AuthService {
     public LoginResponse login(ClientOrigin clientOrigin, AuthRequest request) {
         var accessEvent = new AccountAccessEvent();
         var authentication = authenticationManager.authenticate(request.authentication(clientOrigin.name()));
-        try{
+        try {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String accessToken = tokenService.generateToken(TokenType.Access, authentication, clientOrigin == ClientOrigin.AdminPortal);
@@ -51,10 +51,10 @@ public class AuthService {
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
                     .build();
-        }catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             accessEvent = AccountAccessEvent.loginFail(authentication.getName(), AccessStatus.from(e), request.deviceInfo());
             throw e;
-        }finally {
+        } finally {
             eventPublisher.publishEvent(accessEvent);
         }
     }
@@ -63,7 +63,7 @@ public class AuthService {
     public ServiceLoginResponse internalServiceLogin(ClientOrigin clientOrigin, ServiceLoginRequest request) {
         var token = UsernamePasswordAuthenticationToken.unauthenticated(ClientOrigin.InternalService.name() + "-" + request.getClientId(), request.getClientSecret());
         var authentication = authenticationManager.authenticate(token);
-        try{
+        try {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String accessToken = tokenService.generateToken(TokenType.Access, authentication, clientOrigin == ClientOrigin.AdminPortal);
@@ -76,7 +76,7 @@ public class AuthService {
                     .setRefreshToken(refreshToken)
                     .build();
 
-        } catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             throw e;
         }
     }
@@ -84,7 +84,7 @@ public class AuthService {
 
     public CheckEmployeeAccountResponse checkAccountByEmail(String email) {
         // Check email with company domain name that is company mail or not
-        if(!checkEmailDomainName(email)){
+        if (!checkEmailDomainName(email)) {
             throw new RuntimeException("Your email is not company mail.");
         }
 
@@ -92,7 +92,7 @@ public class AuthService {
         return new CheckEmployeeAccountResponse(employee == null);
     }
 
-    private boolean checkEmailDomainName(String email){
+    private boolean checkEmailDomainName(String email) {
         var arr = email.split("@");
         String domain = arr[1];
         return emailDomainName.equals(domain);

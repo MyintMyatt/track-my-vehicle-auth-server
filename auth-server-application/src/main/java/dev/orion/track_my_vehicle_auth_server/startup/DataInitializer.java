@@ -75,7 +75,7 @@ public class DataInitializer implements CommandLineRunner {
                 entitiesToSave.add(clientEntity);
             }
 
-            clientRepo.saveAll(entitiesToSave);
+//            clientRepo.saveAll(entitiesToSave);
         }catch (Exception e){
             log.error("Error : {}" , e.getMessage(), e);
         }

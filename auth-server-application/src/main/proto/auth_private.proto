@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "dev.orion.grpc.auth.private_client";
+option java_outer_classname = "AuthPrivateProto";
+
+import 'permission_check.proto';
+
+service AuthPrivateService {
+  rpc checkPermission(PermissionCheckRequest) returns (PermissionCheckResponse);
+}

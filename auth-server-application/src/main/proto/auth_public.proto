@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "dev.orion.grpc.auth.public_client";
+option java_outer_classname = "AuthPublicProto";
+
+message ServiceLoginRequest {
+  string clientId = 1;
+  string clientSecret = 2;
+}
+
+message  ServiceLoginResponse {
+  bool success = 1;
+  string message = 2;
+  string accessToken = 3;
+  string refreshToken = 4;
+}
+
+message RenewTokenRequest {
+  string refreshToken = 1;
+}
+
+service AuthPublicService {
+  rpc s2sLogin(ServiceLoginRequest) returns (ServiceLoginResponse);
+  rpc renewS2STokenPair(RenewTokenRequest) returns (ServiceLoginResponse);
+}
