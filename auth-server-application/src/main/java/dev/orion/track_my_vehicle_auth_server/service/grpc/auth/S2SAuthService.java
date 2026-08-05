@@ -1,6 +1,7 @@
 package dev.orion.track_my_vehicle_auth_server.service.grpc.auth;
 
 import dev.orion.grpc.auth.public_client.AuthPublicServiceGrpc;
+import dev.orion.grpc.auth.public_client.RenewTokenRequest;
 import dev.orion.grpc.auth.public_client.ServiceLoginRequest;
 import dev.orion.grpc.auth.public_client.ServiceLoginResponse;
 import dev.orion.track_my_vehicle_auth_server.constant.ClientOrigin;
@@ -22,4 +23,10 @@ public class S2SAuthService extends AuthPublicServiceGrpc.AuthPublicServiceImplB
        responseObserver.onCompleted();
     }
 
+    @Override
+    public void renewS2STokenPair(RenewTokenRequest request, StreamObserver<ServiceLoginResponse> responseObserver) {
+        var result = authService.refreshToken(request.getRefreshToken());
+        responseObserver.onNext(result);
+        responseObserver.onCompleted();
+    }
 }

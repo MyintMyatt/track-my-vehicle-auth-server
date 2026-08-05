@@ -4,14 +4,20 @@ import dev.orion.auth.entity.Account;
 import dev.orion.auth.entity.AdminAccount;
 import dev.orion.auth.entity.DriverAccount;
 import dev.orion.auth.entity.EmployeeAccount;
+import dev.orion.core.domain.account.constant.UserType;
 import dev.orion.track_my_vehicle_auth_server.constant.ClientOrigin;
 import dev.orion.track_my_vehicle_auth_server.utils.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +51,7 @@ public class AuthUserDetailsService implements UserDetailsService {
                 return User.builder()
                         .username(client.getClientId())
                         .password(client.getClientSecret())
+                        .authorities(Set.of(new SimpleGrantedAuthority(ClientOrigin.InternalService.name()), client.getRole() == null ? new SimpleGrantedAuthority("") : new SimpleGrantedAuthority(String.valueOf(client.getRole().getId()))))
                         .disabled(client.getAuditInfo()
                         .isDeleted())
                         .build();

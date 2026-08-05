@@ -4,6 +4,8 @@ import dev.orion.auth.repo.AccountRepo;
 import dev.orion.commons.utils.time.DateTimeUtils;
 import dev.orion.commons.utils.time.TimeSetting;
 import dev.orion.track_my_vehicle_auth_server.constant.TokenType;
+import dev.orion.track_my_vehicle_auth_server.models.TokenParseData;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +22,16 @@ import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,9 +43,13 @@ public class JwtTokenService {
     private static final String FULL_NAME_KEY = "fun";
 
     private PrivateKey privateKey;
+    private PublicKey publicKey;
 
     @Value("${app.jwt.private-key-path}")
     private Resource privateKeyResource;
+
+    @Value("${app.jwt.public-key-path}")
+    private Resource publicKeyResource;
 
     @Value("${app.jwt.token.issuer}")
     private String issuer;
@@ -54,13 +64,22 @@ public class JwtTokenService {
 
     @PostConstruct
     public void init() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        String key = new String(Files.readAllBytes(Paths.get(privateKeyResource.getURI())));
-        String privateKeyPEM = key.replace("-----BEGIN PRIVATE KEY-----", "")
+        String privateKeyStr = new String(Files.readAllBytes(Paths.get(privateKeyResource.getURI())));
+        String privateKeyPEM = privateKeyStr.replace("-----BEGIN PRIVATE KEY-----", "")
                 .replaceAll(System.lineSeparator(), "")
                 .replace("-----END PRIVATE KEY-----", "");
         byte[] encoded = Base64.getDecoder().decode(privateKeyPEM);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         this.privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(encoded));
+
+        String publicKeyStr = new String(Files.readAllBytes(Paths.get(publicKeyResource.getURI())));
+        String publicKeyPEM = publicKeyStr.replace("-----BEGIN PRIVATE KEY-----", "")
+                .replaceAll(System.lineSeparator(), "")
+                .replace("-----END PRIVATE KEY-----", "");
+        byte[] publicEncoded = Base64.getDecoder().decode(publicKeyPEM);
+        KeyFactory publicKF = KeyFactory.getInstance("RSA");
+        this.publicKey = publicKF.generatePublic(new PKCS8EncodedKeySpec(publicEncoded));
+
     }
 
     public String generateToken(TokenType tokenType, Authentication authentication, boolean isWeb) {
@@ -70,7 +89,7 @@ public class JwtTokenService {
             var builder = Jwts.builder().signWith(privateKey);
 
             var username = authentication.getName();
-            var authorities = authentication.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.joining(","));
+            var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
             var userId = Long.parseLong(Objects.requireNonNull(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).filter(this::isLong).toList().getFirst()));
 
@@ -87,7 +106,7 @@ public class JwtTokenService {
             builder.subject(username);
             builder.issuer(issuer);
             builder.issuedAt(DateTimeUtils.toDate(now));
-            builder.expiration(DateTimeUtils.toDate(getExpiration(now, tokenType, isWeb)));
+            builder.expiration(DateTimeUtils.toDate(getExpirationTime(now, tokenType, isWeb)));
 
             builder.claim(ROLE_KEY, authorities);
             builder.claim(TOKEN_TYPE_KEY, tokenType);
@@ -101,7 +120,33 @@ public class JwtTokenService {
         return null;
     }
 
-    private LocalDateTime getExpiration(LocalDateTime dateTime, TokenType tokenType, boolean isWeb) {
+    public TokenParseData parseToken(String token) {
+        var authorities = extractAllClaims(token).get(ROLE_KEY).toString();
+        var tokenType = extractAllClaims(token).get(TOKEN_TYPE_KEY).toString();
+        return TokenParseData.builder()
+                .username(extractClaim(token, Claims::getSubject))
+                .authorities(Arrays.asList(authorities.split(",")))
+                .tokenType(tokenType)
+                .build();
+    }
+
+    private  <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        return claimsResolver.apply(extractAllClaims(token));
+    }
+
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(publicKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    public boolean isTokenExpired(String token) {
+        return extractClaim(token, Claims::getExpiration).before(new Date());
+    }
+
+    private LocalDateTime getExpirationTime(LocalDateTime dateTime, TokenType tokenType, boolean isWeb) {
         var timeSetting = (tokenType == TokenType.Access) ? new TimeSetting(ChronoUnit.MINUTES, accessLifeTime) : new TimeSetting(isWeb ? ChronoUnit.MINUTES : ChronoUnit.HOURS, refreshLifeTime);
         return dateTime.plus(timeSetting.value(), timeSetting.unit());
     }

@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,6 +80,26 @@ public class AuthService {
         } catch (AuthenticationException e) {
             throw e;
         }
+    }
+
+    public ServiceLoginResponse refreshToken(String token) {
+       var tokenParseData = tokenService.parseToken(token);
+
+        var authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken.authenticated(
+                tokenParseData.getUsername(),
+                null,
+                tokenParseData.getAuthorities().stream().map(SimpleGrantedAuthority::new).toList()
+        ));
+
+        String accessToken = tokenService.generateToken(TokenType.Access, authentication, false);
+        String refreshToken = tokenService.generateToken(TokenType.Refresh, authentication, false);
+
+        return ServiceLoginResponse.newBuilder()
+                .setSuccess(true)
+                .setMessage("Successfully refresh token")
+                .setAccessToken(accessToken)
+                .setRefreshToken(refreshToken)
+                .build();
     }
 
 
