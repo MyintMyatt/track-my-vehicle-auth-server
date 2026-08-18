@@ -5,7 +5,7 @@ import dev.orion.auth.constant.OtpHistoryType;
 import dev.orion.auth.embedded.OtpHistoryPk;
 import dev.orion.commons.exception.auth.OtpException;
 import dev.orion.commons.utils.time.TimeSetting;
-import dev.orion.grpc.notification.OtpNotificationRequest;
+//import dev.orion.grpc.notification.OtpNotificationRequest;
 import dev.orion.track_my_vehicle_auth_server.dto.request.OtpCheckForm;
 import dev.orion.track_my_vehicle_auth_server.dto.request.OtpRequestForm;
 import dev.orion.track_my_vehicle_auth_server.logs.event.OtpHistoryEvent;
@@ -38,7 +38,7 @@ public class OtpServiceImpl implements OtpService {
         otpLockService.checkUserIsInOtpLock(form, LockSettingType.OtpFailAttemptLock, OtpHistoryType.FailedAttempt);
 
         var otp = OtpCodeGeneratorUtils.generate();
-        var otpRequest = OtpNotificationRequest.newBuilder().setEmail(form.email()).setOtp(otp).build();
+//        var otpRequest = OtpNotificationRequest.newBuilder().setEmail(form.email()).setOtp(otp).build();
 //        notificationClient.sendOtp(otpRequest).thenAccept(response -> {
 //            if (response.getSuccess()) {
 //                saveOtp(form.email(), otp, otpExpTime());

@@ -25,6 +25,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -73,12 +74,12 @@ public class JwtTokenService {
         this.privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(encoded));
 
         String publicKeyStr = new String(Files.readAllBytes(Paths.get(publicKeyResource.getURI())));
-        String publicKeyPEM = publicKeyStr.replace("-----BEGIN PRIVATE KEY-----", "")
+        String publicKeyPEM = publicKeyStr.replace("-----BEGIN PUBLIC KEY-----", "")
                 .replaceAll(System.lineSeparator(), "")
-                .replace("-----END PRIVATE KEY-----", "");
+                .replace("-----END PUBLIC KEY-----", "");
         byte[] publicEncoded = Base64.getDecoder().decode(publicKeyPEM);
         KeyFactory publicKF = KeyFactory.getInstance("RSA");
-        this.publicKey = publicKF.generatePublic(new PKCS8EncodedKeySpec(publicEncoded));
+        this.publicKey = publicKF.generatePublic(new X509EncodedKeySpec(publicEncoded));
 
     }
 
