@@ -30,6 +30,7 @@
         <auth.domain.version>0.0.1-SNAPSHOT</auth.domain.version>
         <common.version>1.0-SNAPSHOT</common.version>
         <jwt.version>0.13.0</jwt.version>
+        <ez-sender-client.version>1.0-SNAPSHOT</ez-sender-client.version>
     </properties>
 
     <dependencyManagement>
@@ -59,6 +60,12 @@
                 <groupId>dev.orion</groupId>
                 <artifactId>track-my-vehicle-core-domain</artifactId>
                 <version>${core.domain.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.orion</groupId>
+                <artifactId>ez-sender-client</artifactId>
+                <version>${ez-sender-client.version}</version>
             </dependency>
 
             <dependency>

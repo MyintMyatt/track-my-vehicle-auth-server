@@ -102,6 +102,11 @@
             <artifactId>auth-server-domain</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>dev.orion</groupId>
+            <artifactId>ez-sender-client</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

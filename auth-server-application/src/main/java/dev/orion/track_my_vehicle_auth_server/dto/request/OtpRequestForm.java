@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 public record OtpRequestForm(
         @NotBlank(message = "{validation.empty} email")
         String email,
-        boolean isResend
+        Boolean isResend
 ) {
 }
