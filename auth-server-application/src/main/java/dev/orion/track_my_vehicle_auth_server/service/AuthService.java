@@ -110,7 +110,14 @@ public class AuthService {
         }
 
         var employee = accountService.findEmployeeByEmail(email);
-        return new CheckEmployeeAccountResponse(employee == null);
+
+        if(employee != null){
+            return new CheckEmployeeAccountResponse(false, "Account already existed with this email");
+        }
+
+        // TODO: send otp mail
+
+        return new CheckEmployeeAccountResponse(true, "Please verify OTP to finish setting up your account.We've already sent OTP to your email.");
     }
 
     private boolean checkEmailDomainName(String email) {

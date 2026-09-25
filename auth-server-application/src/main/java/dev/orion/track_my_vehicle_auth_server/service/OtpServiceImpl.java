@@ -7,6 +7,7 @@ import com.ezsender.client.models.OtpRequest;
 import dev.orion.auth.constant.LockSettingType;
 import dev.orion.auth.constant.OtpHistoryType;
 import dev.orion.auth.embedded.OtpHistoryPk;
+import dev.orion.auth.entity.Account;
 import dev.orion.commons.exception.auth.OtpException;
 import dev.orion.commons.utils.time.TimeSetting;
 import dev.orion.grpc.notification.OtpMailRequest;
@@ -54,12 +55,12 @@ public class OtpServiceImpl implements OtpService {
 //           otpLockService.checkUserIsInOtpLock(form, LockSettingType.OtpFailAttemptLock, OtpHistoryType.FailedAttempt);
 
            var otp = OtpCodeGeneratorUtils.generate();
-           var eventData = new OtpRequest("Orion Alexander", "3 min", otp, "sign up verification");
+           var eventData = new OtpRequest(null, "3 min", otp, "sign up verification");
 
            var notiEvent = new NotificationRequest(
                       "notification-id-123",
-                   form.email(),
-                   1,
+                   form.username(),
+                   3,
                    OffsetDateTime.now(),
                    "8344611",
                    Locale.ENGLISH,
@@ -67,7 +68,6 @@ public class OtpServiceImpl implements OtpService {
                    objectMapper.convertValue(eventData, new TypeReference<Map<String, Object>>() {})
 
            );
-           log.info("Payload: {}, form mail - {}", notiEvent.recipient(), form.email());
            rabbitTemplate.convertAndSend(
                    EzSenderRabbitMqMetadata.MAIN_EXCHANGE,
                    "security.otp.email",

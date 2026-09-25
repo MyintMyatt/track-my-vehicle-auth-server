@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth/v1/")
+@RequestMapping("/public/v1")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -26,8 +26,8 @@ public class AuthController {
         return ApiResponse.success(authService.login(clientOrigin, request));
     }
 
-    @PostMapping("/check/account/{email}")
-    public ApiResponse<CheckEmployeeAccountResponse> checkAccountByEmail(@PathVariable String email){
+    @PostMapping("/check/email")
+    public ApiResponse<CheckEmployeeAccountResponse> checkAccountByEmail(@RequestParam(name = "email") String email){
         return ApiResponse.success(authService.checkAccountByEmail(email));
     }
 }
