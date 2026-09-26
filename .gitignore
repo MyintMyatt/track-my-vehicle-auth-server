@@ -34,3 +34,5 @@ build/
 
 auth-server-application/src/main/resources/certs/private-key.pem
 auth-server-application/src/main/resources/application-prod.properties
+
+auth-server-application/src/mvn/resources/application-prod.properties

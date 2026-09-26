@@ -1,6 +1,5 @@
 package dev.orion.track_my_vehicle_auth_server.service;
 
-import com.ezsender.client.grpc.EzSenderGrpcClient;
 import com.ezsender.client.metadata.EzSenderRabbitMqMetadata;
 import com.ezsender.client.models.NotificationRequest;
 import com.ezsender.client.models.OtpRequest;
@@ -9,8 +8,8 @@ import dev.orion.auth.constant.OtpHistoryType;
 import dev.orion.auth.embedded.OtpHistoryPk;
 import dev.orion.auth.entity.Account;
 import dev.orion.commons.exception.auth.OtpException;
+import dev.orion.core.domain.common.constant.SystemType;
 import dev.orion.commons.utils.time.TimeSetting;
-import dev.orion.grpc.notification.OtpMailRequest;
 import dev.orion.track_my_vehicle_auth_server.dto.request.OtpCheckForm;
 import dev.orion.track_my_vehicle_auth_server.dto.request.OtpRequestForm;
 import dev.orion.track_my_vehicle_auth_server.logs.event.OtpHistoryEvent;
@@ -44,11 +43,11 @@ public class OtpServiceImpl implements OtpService {
     private final ObjectMapper objectMapper;
 
     @Override
-    public boolean send(OtpRequestForm form) {
+    public boolean send(SystemType clientType, OtpRequestForm form) {
 
        try{
 //           // 1. At first check user is in otp temp lock
-//           otpLockService.checkUserIsInOtpTempLock(form.email());
+//           otpLockService.checkUserIsInOtpTempLock(form.username());
 //           // 2. check user request OTP many times
 //           otpLockService.checkUserIsInOtpLock(form, LockSettingType.OtpMaxRequestLock, OtpHistoryType.Requested);
 //           // 3. check user enter wrong otp
@@ -87,18 +86,18 @@ public class OtpServiceImpl implements OtpService {
     }
 
     @Override
-    public boolean check(String otpCheckSum, OtpCheckForm form) {
+    public boolean check(SystemType clientType, String otpCheckSum, OtpCheckForm form) {
         // TODO: implement otp key encryption / decryption
-        var encryptedEmail = OtpHistoryPk.fromOtpKey(otpCheckSum).getEmail();
-        if (!encryptedEmail.equals(form.email())){
+        var encryptedEmail = OtpHistoryPk.fromOtpKey(otpCheckSum).getUsername();
+        if (!encryptedEmail.equals(form.username())){
             throw new OtpException("Invalid Otp");
         }
 
-        if(!isValidateOtp(form.email(),form.otp())){
-            eventPublisher.publishEvent(new OtpHistoryEvent(form.email(), OtpHistoryType.FailedAttempt, true));
+        if(!isValidateOtp(form.username(),form.otp())){
+            eventPublisher.publishEvent(new OtpHistoryEvent(clientType + "-" + form.username(), OtpHistoryType.FailedAttempt, true));
             throw new OtpException("Invalid Otp");
         }
-        eventPublisher.publishEvent(new OtpHistoryEvent(form.email(), OtpHistoryType.Verified, true));
+        eventPublisher.publishEvent(new OtpHistoryEvent(clientType + "-" + form.username(), OtpHistoryType.Verified, true));
         return true;
     }
 

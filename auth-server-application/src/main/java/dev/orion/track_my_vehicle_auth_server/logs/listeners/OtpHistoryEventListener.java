@@ -1,6 +1,7 @@
 package dev.orion.track_my_vehicle_auth_server.logs.listeners;
 
 import dev.orion.auth.embedded.OtpHistoryPk;
+import dev.orion.auth.embedded.UserName; 
 import dev.orion.auth.entity.OtpHistory;
 import dev.orion.auth.repo.OtpHistoryRepo;
 import dev.orion.track_my_vehicle_auth_server.logs.event.OtpHistoryEvent;
@@ -21,7 +22,11 @@ public class OtpHistoryEventListener {
     @Transactional
     public void saveHistory(OtpHistoryEvent event){
         var history = new OtpHistory();
-        var pk = new OtpHistoryPk().pk(event.email());
+
+        var username = new UserName();
+        username = username.toUserName(event.username());
+
+        var pk = new OtpHistoryPk().pk(username);
         history.setOtpHistoryPk(pk);
         history.setOtpHistoryType(event.type());
         history.setUsed(event.isUsed());

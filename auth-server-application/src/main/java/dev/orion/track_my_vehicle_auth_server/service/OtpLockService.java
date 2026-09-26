@@ -73,7 +73,7 @@ public class OtpLockService {
             cq.select(cb.count(root));
             cq.where(
                     cb.and(
-                            cb.equal(root.get("email"), request.email()),
+                            cb.equal(root.get("email"), request.username()),
                             cb.equal(root.get("otpHistoryType"), historyType),
                             cb.greaterThanOrEqualTo(root.get("attemptWindowDurationUnit"), LocalDateTime.now().minus(setting.getTemporaryLockOutValue(), setting.getAttemptWindowDurationUnit()))
                     )
@@ -83,7 +83,7 @@ public class OtpLockService {
 
         if (attempts >= setting.getAllowMaxAttempt()) {
             eventPublisher.publishEvent(new OtpHistoryEvent(
-                            request.email(),
+                            request.username(),
                             OtpHistoryType.TemporaryLockOut,
                             true
                     ));

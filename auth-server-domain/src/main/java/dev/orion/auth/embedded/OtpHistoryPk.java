@@ -5,6 +5,7 @@ import dev.orion.commons.utils.time.DateTimeUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
+import dev.orion.auth.embedded.UserName;
 
 import java.time.LocalDateTime;
 
@@ -16,21 +17,21 @@ public class OtpHistoryPk {
     private LocalDateTime issuedAt;
 
     @Column(nullable = false)
-    private String email;
+    private UserName username;
 
     private int seq;
 
-    public OtpHistoryPk pk(String email){
+    public OtpHistoryPk pk(UserName username){
         var pk = new OtpHistoryPk();
         pk.setIssuedAt(LocalDateTime.now());
-        pk.setEmail(email);
+        pk.setUsername(username);
         pk.setSeq(++seq);
         return pk;
     }
 
     public String toOtpKey(){
         var dateTime = DateTimeUtils.yyyyMMddHHmmss(issuedAt);
-        return dateTime + "-" + email + "-" + seq;
+        return dateTime + "-" + username.toString() + "-" + seq;
     }
 
     public static OtpHistoryPk fromOtpKey(String key){
@@ -38,9 +39,11 @@ public class OtpHistoryPk {
         if(part.length != 3) {
             throw new OtpException("Invalid OTP Key");
         }
+        var username = new UserName();
+        username = username.toUserName(part[1]);
         var pk = new OtpHistoryPk();
         pk.setIssuedAt(LocalDateTime.parse(part[0]));
-        pk.setEmail(part[1]);
+        pk.setUsername(username);
         pk.setSeq(Integer.parseInt(part[2]));
         return pk;
     }
