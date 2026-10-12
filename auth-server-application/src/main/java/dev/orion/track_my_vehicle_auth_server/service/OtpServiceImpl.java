@@ -28,6 +28,7 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -35,12 +36,58 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class OtpServiceImpl implements OtpService {
 
+
+    private static final String OTP_TEMPLATE_ID = "8344611";
 //    private final EzSenderGrpcClient ezSenderGrpcClient;
     private final OtpLockService otpLockService;
     private final StringRedisTemplate redisTemplate;
     private final ApplicationEventPublisher eventPublisher;
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
+
+
+    // Public otp used when user sign up verification
+    @Override
+    public boolean sendPublicOtp(SystemType clientType,String recipient){
+      try {
+        var otp = OtpCodeGeneratorUtils.generate();
+        var request = new OtpRequest("User", "3 min", otp, "sign up verification");
+        
+        saveOtp(recipient, otp, otpExpTime());
+
+        var notiEvent = new NotificationRequest(
+                  UUID.randomUUID().toString(),
+                   recipient,
+                   3,
+                   OffsetDateTime.now(),
+                   OTP_TEMPLATE_ID,
+                   Locale.ENGLISH,
+                   "Sign Up Verification",
+                   objectMapper.convertValue(request, new TypeReference<Map<String, Object>>() {})
+         );
+
+        rabbitTemplate.convertAndSend(
+            EzSenderRabbitMqMetadata.MAIN_EXCHANGE,
+            "security.otp.email",
+            notiEvent,
+            message -> {
+                       message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+                       message.getMessageProperties().setPriority(5);
+                       return message;
+              }
+        );
+
+        return true;
+      } catch (Exception ex){
+        log.error("Error : {}", ex.getMessage());
+        throw ex;
+      }
+    }
+
+    @Override
+    public boolean checkPublicOtp(SystemType clientType, OtpCheckForm form){
+      throw new UnsupportedOperationException("Check Public Otp Not Implemented Yet!");
+    }
 
     @Override
     public boolean send(SystemType clientType, OtpRequestForm form) {
@@ -101,16 +148,16 @@ public class OtpServiceImpl implements OtpService {
         return true;
     }
 
-    private void saveOtp(String email, String otp, TimeSetting expirationTime){
-        redisTemplate.opsForValue().set(email, otp, expirationTime.value(), TimeUnit.of(expirationTime.unit()));
+    private void saveOtp(String recipient, String otp, TimeSetting expirationTime){
+        redisTemplate.opsForValue().set(recipient, otp, expirationTime.value(), TimeUnit.of(expirationTime.unit()));
     }
 
-    private boolean isValidateOtp(String email, String otp){
-        var result = redisTemplate.opsForValue().get(email);
+    private boolean isValidateOtp(String recipient, String otp){
+        var result = redisTemplate.opsForValue().get(recipient);
         if(!otp.equals(result)){
             return false;
         }
-        redisTemplate.delete(email);
+        redisTemplate.delete(recipient);
         return true;
     }
 

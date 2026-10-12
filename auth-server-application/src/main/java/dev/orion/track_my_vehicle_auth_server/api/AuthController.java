@@ -30,4 +30,9 @@ public class AuthController {
     public ApiResponse<CheckEmployeeAccountResponse> checkAccountByEmail(@RequestParam(name = "email") String email){
         return ApiResponse.success(authService.checkAccountByEmail(email));
     }
+
+    @PostMapping("/check/phone")
+    public ApiResponse<CheckEmployeeAccountResponse> checkAccountByPhone(@RequestParam(name = "phone") String phone){
+        return ApiResponse.success(authService.checkAccountByPhone(phone));
+    }
 }

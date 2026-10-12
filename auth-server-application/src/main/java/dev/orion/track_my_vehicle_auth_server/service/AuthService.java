@@ -102,7 +102,11 @@ public class AuthService {
                 .build();
     }
 
-
+    public CheckEmployeeAccountResponse checkAccountByPhone(String phone){
+      // TODO: check phone duplication, send otp sms
+      // NOTE: but for testing, send otp via push notification as we dont have sms provider
+      throw new UnsupportedOperationException("Phone check not implemented yet.!"); 
+    }
     public CheckEmployeeAccountResponse checkAccountByEmail(String email) {
         // Check email with company domain name that is company mail or not
         if (!checkEmailDomainName(email)) {

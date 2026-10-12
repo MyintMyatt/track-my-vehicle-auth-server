@@ -19,11 +19,20 @@ public class OtpController {
     @PostMapping("/send")
     public ApiResponse<Boolean> send(
         @RequestHeader(name = "X-Client-Type", required = true) SystemType clientType,
-        @RequestBody OtpRequestForm form,
-        BindingResult result
+        @RequestParam(value = "recipient", required = true)String recipent
         ){
-        return ApiResponse.success(otpService.send(clientType, form));
+        return ApiResponse.success(otpService.sendPublicOtp(clientType, recipent));
     }
+
+
+    // @PostMapping("/send")
+    // public ApiResponse<Boolean> send(
+    //     @RequestHeader(name = "X-Client-Type", required = true) SystemType clientType,
+    //     @RequestBody OtpRequestForm form,
+    //     BindingResult result
+    //     ){
+    //     return ApiResponse.success(otpService.send(clientType, form));
+    // }
 
     @PostMapping("/check")
     public ApiResponse<Boolean> check(
