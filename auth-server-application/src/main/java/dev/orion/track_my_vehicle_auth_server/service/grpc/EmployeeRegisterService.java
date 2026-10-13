@@ -35,7 +35,7 @@ public class EmployeeRegisterService extends EmployeeRegisterServiceGrpc.Employe
         account.setUserName(username);
         account.setUserType(UserType.EMPLOYEE);
         account.setFullName(request.getFullName());
-        account.setPhone(request.getPhone());
+        // account.setPhone(request.getPhone());
         account.setEmail(request.getEmail());
         account.setPassword(passwordEncoder.encode(request.getPassword()));
         account.setTransactionState(TransactionState.SUCCESS);
